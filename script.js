@@ -1,0 +1,67 @@
+let userScore= 0;
+let compScore= 0;
+
+const choices = document.querySelectorAll(".choice");
+
+const msg = document.getElementById("msg");
+const userScorePara = document.getElementById("user-score");
+const compScorePara = document.getElementById("comp-score");
+
+const genCompChoice = ()=> {
+    const options = ["rock", "paper", "scissors"];
+    const randIdx = Math.floor(Math.random()*3);
+    return options[randIdx];
+}
+
+const drawGame = ()=>{
+    //console.log("Game was draw.");
+    msg.innerText = "Game was draw, Play again.";
+    msg.style.backgroundColor = "blue";
+}
+
+const showWinner = (userWin)=>{
+    if(userWin === true){
+        userScore++;
+        userScorePara.innerText = userScore;
+        //console.log("You won!");
+        msg.innerText = "You won!";
+        msg.style.backgroundColor = "green";
+    }else{
+        compScore++;
+        compScorePara.innerText = compScore;
+        //console.log("You lose.");
+        msg.innerText = "You lose.";
+        msg.style.backgroundColor = "red";
+    }
+}
+
+const playGame = (userChoice) => {
+    console.log("user choice =",userChoice);
+    const compChoice = genCompChoice();
+    console.log("comp choice =",compChoice);
+
+    if(userChoice === compChoice){
+        drawGame();
+    } else {
+        let userWin = true;
+        if(userChoice === "rock"){
+            //paper,scissors
+            userWin = compChoice === "paper" ? false:true;
+        }else if(userChoice === "paper"){
+            //rock,scissors
+            userWin = compChoice === "scissors" ?false:true;
+        }else{
+            //rock,paper
+            userWin = compChoice === "rock" ?false:true;
+        }
+        showWinner(userWin);
+    }
+    
+}
+
+choices.forEach((choice) => {
+    choice.addEventListener("click",()=>{
+        const userChoice = choice.getAttribute("id")
+        playGame(userChoice);
+    });
+});
